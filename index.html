@@ -5,53 +5,52 @@
 <script language="javascript">
 //everyWeek.timetable
 function changecolor() {
-	var week;
-	var i,j,k;
+	var i,j;
 	var day=new Date().getDay();
 	switch (day)
 	{
 		//monday
 		case 1:
-		  k=1;
+
  			for (var i = 1; i <= 4; i++)
 			{
-				j=k*10+i;
+				j=10+i;
 				eval("T"+j).bgColor="#98F5FF";
 			}break;
 
 		//tuesday
 		case 2:
-		  k=2;
+
 			for (var i = 1; i <= 4; i++)
 			{
-				j=k*10+i;
+				j=20+i;
 				eval("T"+j).bgColor="#98F5FF";
 			}break;
 
 		//wednesday
 		case 3:
-		  k=3;
+
 			for (var i = 1; i <= 4; i++)
 			{
-				j=k*10+i;
+				j=30+i;
 				eval("T"+j).bgColor="#98F5FF";
 			}break;
 
 		//thursday
 		case 4:
-			k=4;
+
 			for (var i = 1; i <= 4; i++)
 			{
-				j=k*10+i;
+				j=40+i;
 				eval("T"+j).bgColor="#98F5FF";
 			}break;
 
 		//friday
 		case 5:
-			k=5;
+
 			for (var i = 1; i <= 4; i++)
 			{
-				j=k*10+i;
+				j=50+i;
 				eval("T"+j).bgColor="#98F5FF";
 			}break;
 		default:
