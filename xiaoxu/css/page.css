@@ -119,22 +119,23 @@
 }
 
 .container{
-  text-align: center;
-  width: 70%;
+  width: 80%;
   margin: 0 auto;
 }
 .container ul{
   list-style: none;
-  width:840px;
+  width: 900px;
   height:370px;
   margin: 0 auto;
 }
 .cli{
-  margin: 20px auto;
+  margin: 30px auto;
+  padding-left: 5px;
+  padding-right: 5px;
   float: left;
 }
 .cli img{
-  width: 168px;
+  width: 170px;
   height: auto;
 }
 
