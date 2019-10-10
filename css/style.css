@@ -1,46 +1,55 @@
-*{
-    margin:0;
-    padding:0;
+* {
+    margin: 0;
+    padding: 0;
 }
-ul li{
+
+ul li {
     list-style: none;
 }
+
 /*头部*/
-.header{
-    width:auto;
-    height:60px;
+.header {
+    width: auto;
+    height: 60px;
     background-color: #f9f7ec;
     box-shadow: 0 0 5px #ccc;
 }
+
 /*标题*/
-.hTitle{
+.hTitle {
     font-size: 40px;
     color: #3399cc;
     padding: 0 40px;
     float: left;
 }
+
 /*导航栏目录*/
-.hMenu{
+.hMenu {
     font-size: 25px;
     color: #3399cc;
     line-height: 60px;
 }
-a{
+
+a {
     color: #3399cc;
     text-decoration: none;
     text-align: center;
-    padding:0 20px;
+    padding: 0 20px;
 }
-a:hover,li:hover{
+
+a:hover,
+li:hover {
     color: #1177aa;
     background-color: #f3f1e6;
 }
+
 /*菜单*/
-.menu{
+.menu {
     float: left;
 }
+
 /*子菜单*/
-.menu ul{
+.menu ul {
     line-height: 30px;
     background-color: #f9f7ec;
     font-size: 15px;
@@ -48,39 +57,43 @@ a:hover,li:hover{
     position: absolute;
     z-index: 2;
 }
-.mes{
+
+.mes {
     padding: 5px 25px;
     text-align: center;
 }
 
 /*主要内容*/
 /*瀑布流容器*/
-#container{
+#container {
     margin: 1px 0;
     position: relative;
 }
+
 /*瀑布流每一张图*/
-.box{
+.box {
     padding: 5px;
     float: left;
 }
-.box_img{
+
+.box_img {
     padding: 5px;
     border: 1px solid #cccccc;
     box-shadow: 0 0 5px #ccc;
     border-radius: 5px;
 }
-.box_img img{
+
+.box_img img {
     width: 150px;
     height: auto;
 }
 
 /*脚部信息*/
-.footer{
+.footer {
     clear: left;
     position: static;
     bottom: 0;
-    background:#666666;
+    background: #666666;
     color: #ffffff;
     text-align: center;
     padding: 10px 0;
