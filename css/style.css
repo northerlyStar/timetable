@@ -18,6 +18,7 @@ ul li {
 /*标题*/
 .hTitle {
     font-size: 40px;
+    font-weight: 200;
     color: #3399cc;
     padding: 0 40px;
     float: left;
@@ -26,6 +27,7 @@ ul li {
 /*导航栏目录*/
 .hMenu {
     font-size: 25px;
+    font-weight: 200;
     color: #3399cc;
     line-height: 60px;
 }
