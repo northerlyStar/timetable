@@ -8,6 +8,7 @@
   <title>咨询详情</title>
   <script src=""></script>
   <script src="./vue.min.js"></script>
+  <script src="./axios.min.js"></script>
   <script>
     var Base64 = {
       // private property
@@ -116,7 +117,7 @@
     <div v-html="richText"></div>
   </div>
   <script>
-    // Vue.prototype.axios = axios;
+    Vue.prototype.axios = axios;
     let app = new Vue({
       el: "#app",
       data: {
@@ -136,7 +137,26 @@
               theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
             }
           }
-          this.richText = Base64.decode(theRequest.data);
+          let data = Base64.decode(theRequest.data);
+          console.log(typeof data, data);
+          let {baseUrl, articleUrl, userId, id} = JSON.parse(data);
+          let params = {
+            userId: userId,
+              id: id,
+          };
+          this.axios({
+            method: 'post',
+            url: baseUrl + articleUrl,
+            params: params,
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          }).then((result) => {
+            console.log(result);
+            this.richText = result.data.data.info.content;
+          }).catch((err) => {
+            console.log(err)
+          });
         }
       },
     })
