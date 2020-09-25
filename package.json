@@ -2,11 +2,13 @@
   "name": "vue_version",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://northerlystar.github.io/vue_website",
+  "homepage": "http://northerlystar.github.io",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "axios": "^0.19.2",
