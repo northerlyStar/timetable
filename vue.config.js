@@ -1,6 +1,6 @@
 module.exports = {
   outputDir: 'dist',
-  publicPath: process.env.NODE_ENV === 'production' ? '/northerlystar.github.io/' : '/',
+  publicPath: '/',
   assetsDir: 'static',
   lintOnSave: false
 }
