@@ -11,6 +11,7 @@
             <div class="tag" v-else>班</div>
           </div>
           <span>{{it}}</span>
+          <span v-if="typeof workOrRest(it) == 'string'" class="festival">{{workOrRest(it)}}</span>
         </div>
       </div>
     </div>
@@ -107,7 +108,8 @@ export default {
         // 国家法定节假日月份
         if (holiday.rest[month]) {
           if (holiday.rest[month].indexOf(String(day)) >= 0) {
-            return true;
+            let festival = holiday.festival[month][day];
+            return festival || true;
           }
         }
         // 国家法定节假日的调休
@@ -209,5 +211,17 @@ export default {
   background-color: #ffffff;
   color: #62e795;
   z-index: 1;
+}
+
+.festival {
+  font-size: 0.6rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  line-height: 0.8rem;
+  background: #f74242;
+  color: #ffffff;
+  padding: 0.1rem 0;
 }
 </style>
