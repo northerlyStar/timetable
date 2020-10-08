@@ -82,7 +82,7 @@ export default {
     offsetBorder: function() {
       let m = this.date;
       // 获得本月1日
-      let d = new Date(`${m.getFullYear()}/${m.getMonth() + 1}`);
+      let d = new Date(`${m.getFullYear()}/${m.getMonth() + 1}/01`);
       // 1日是周几
       let day = d.getDay();
       // 如果是周日转换为7
@@ -154,6 +154,8 @@ export default {
 
 .border {
   border: 1px solid #f74242;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
   border-radius: 0 0 4px 4px;
   width: 100%;
   box-sizing: border-box;
@@ -167,9 +169,7 @@ export default {
   width: 100%;
   color: #ffffff;
   background-color: #f74242;
-  border: 1px solid #f74242;
   border-radius: 4px 4px 0 0;
-  border-bottom: none;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -193,8 +193,8 @@ export default {
 .item::before {
   content: '';
   position: absolute;
-  left: -1px;
-  top: -1px;
+  left: 0;
+  top: 0;
   right: 0;
   bottom: 0;
   border: 1px solid #f74242;
