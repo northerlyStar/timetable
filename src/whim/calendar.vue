@@ -41,7 +41,7 @@ export default {
   },
   created() {
     // this.date = new Date('2020/10/01');
-    this.date = new Date();
+    this.date = this.$store.getters.getDate;
   },
   mounted() {
     let that = this;
@@ -96,7 +96,8 @@ export default {
       let d = this.date;
       let f = new Date(`${d.getFullYear()}/${d.getMonth() + 1}/01`);
       let H = f.getDay() > 4 ? 6 : 5;
-      return H * 3;
+      // 5rem
+      return H * 5;
     },
     // 工作日或者休假
     workOrRest: function() {
@@ -181,9 +182,22 @@ export default {
 .item {
   position: relative;
   width: 7rem;
-  height: 3rem;
-  line-height: 3rem;
+  height: 5rem;
+  line-height: 5rem;
   text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.item::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  right: 0;
+  bottom: 0;
+  border: 1px solid #f74242;
+  z-index: 999;
 }
 
 .tag {
@@ -214,14 +228,15 @@ export default {
 }
 
 .festival {
-  font-size: 0.6rem;
+  font-size: 0.9rem;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  line-height: 0.8rem;
+  line-height: 1.3rem;
   background: #f74242;
   color: #ffffff;
-  padding: 0.1rem 0;
+  padding: 0.2rem 0;
+  font-weight: normal;
 }
 </style>

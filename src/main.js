@@ -5,8 +5,8 @@ import App from './App'
 // router
 import router from './router'
 // vuex
-import Vuex from 'vuex'
-Vue.use(Vuex)
+import store from './vuex/vuex'
+
 // axios
 import axios from 'axios'
 Vue.prototype.axios = axios;
@@ -25,5 +25,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 }).$mount("#app")
