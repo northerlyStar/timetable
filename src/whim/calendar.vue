@@ -5,7 +5,7 @@
     </div>
     <div class="border" :style="{height: borderHeight + 'rem'}">
       <div class="row" v-for="item in arr" :style="{left: offsetBorder + 'rem'}">
-        <div class="item" v-for="it in item" :class="{red: it == date.getDate()}" v-show="showNum(it)">
+        <div v-for="it in item" :class="['item', { 'red': it == date.getDate() }]" :style="{height: itemHeight + 'rem', lineHeight: itemHeight + 'rem',}" v-show="showNum(it)">
           <div v-show="it">
             <div class="tag free" v-if="workOrRest(it)">休</div>
             <div class="tag" v-else>班</div>
@@ -37,6 +37,8 @@ export default {
       ],
       week: ['日', '一', '二', '三', '四', '五', '六'],
       date: '',
+      // item 行高 单位rem
+      itemHeight: 5,
     };
   },
   created() {
@@ -96,8 +98,7 @@ export default {
       let d = this.date;
       let f = new Date(`${d.getFullYear()}/${d.getMonth() + 1}/01`);
       let H = f.getDay() > 4 ? 6 : 5;
-      // 5rem
-      return H * 5;
+      return H * this.itemHeight;
     },
     // 工作日或者休假
     workOrRest: function() {
@@ -184,8 +185,6 @@ export default {
 .item {
   position: relative;
   width: 7rem;
-  height: 5rem;
-  line-height: 5rem;
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
