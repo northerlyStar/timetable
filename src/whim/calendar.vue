@@ -156,6 +156,7 @@ export default {
   border-radius: 0 0 4px 4px;
   width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .border_title {
@@ -169,6 +170,7 @@ export default {
   border-radius: 4px 4px 0 0;
   border-bottom: none;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .row {
