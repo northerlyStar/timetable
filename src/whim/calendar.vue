@@ -39,11 +39,16 @@ export default {
       date: '',
       // item 行高 单位rem
       itemHeight: 5,
+      // 本月节气日期
+      d: [],
+      // 节气中文
+      solarTerms: [],
     };
   },
   created() {
     // this.date = new Date('2020/10/01');
     this.date = this.$store.getters.getDate;
+    this.d = this.formula();
   },
   mounted() {
     let that = this;
@@ -56,13 +61,49 @@ export default {
     }
   },
   methods: {
+    // 寿星公式 (Y * D + C) - L
+    formula() {
+      let y = new Date().getFullYear();
+      let D = 0.2422;
+      // 获取C值
+      let month = new Date().getMonth() + 1;
+      let C = [holiday.cOfSolarTerms[month * 2 - 2], holiday.cOfSolarTerms[month * 2 - 1]];
+      this.solarTerms = [holiday.solarTerms[month * 2 - 2], holiday.solarTerms[month * 2 - 1]];
+      // 计算L
+      let L = Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400);
+      return C.map(data => {
+        return Math.round(y * D + data) - L;
+      })
+    },
     setFontSize() {
       if (this.screenWidth < 760) {
         document.documentElement.style.fontSize = this.screenWidth / 60 + "px";
       } else {
         document.documentElement.style.fontSize = this.screenWidth / 100 + "px";
       }
-    }
+    },
+    // 农历
+    lunarCalendar () {
+      // 农历年 十六进制
+      let lunar = holiday.lunarInfo[this.date.getFullYear() - 1900].toString(2);
+      // 不足十六位
+      if (lunar.length < 16) {
+        // 补足十六位
+        for (let i = lunar.length; lunar.length < 16; i++) {
+          lunar = '0' + lunar;
+        }
+      }
+      // 取1-4位算闰月是哪月
+      let ifLeap = parseInt(lunar.substring(lunar.length - 4), 2);
+      // 5-16位各月份天数
+      let lunarMonth = lunar.slice(0, lunar.length - 4);
+      // 闰月为大月还是小月
+      let leap;
+      if (ifLeap !== 0) {
+        leap = holiday.lunarInfo[this.date.getFullYear() - 1900] + '';
+      }
+      console.log('十六进制：', lunar, '闰月：', ifLeap, '农历各月份天数：', lunarMonth, '闰月大小：', leap);
+    },
   },
   watch: {
     screenWidth(val) {
@@ -107,6 +148,11 @@ export default {
         let month = this.date.getMonth() + 1;
         let newDate = new Date(`${year}/${month}/${day}`);
         let result = newDate.getDay();
+        // 二十四节气
+        if (this.d.indexOf(day) >= 0) {
+          let solarTerms = this.solarTerms[this.d.indexOf(day)];
+          return solarTerms || true;
+        }
         // 国家法定节假日月份
         if (holiday.rest[month]) {
           if (holiday.rest[month].indexOf(String(day)) >= 0) {
@@ -191,7 +237,7 @@ export default {
 }
 
 .item::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -222,7 +268,7 @@ export default {
   color: #ffffff;
 }
 
-.red>div>.tag {
+.red > div > .tag {
   background-color: #ffffff;
   color: #62e795;
   z-index: 1;
