@@ -1,11 +1,11 @@
 <template>
   <div class="calendar">
     <div class="border_title">
-      <div class="item" v-for="item in week">{{item}}</div>
+      <div class="item" v-for="(item, index) in week" :key="index">{{item}}</div>
     </div>
     <div class="border" :style="{height: borderHeight + 'rem'}">
-      <div class="row" v-for="item in arr" :style="{left: offsetBorder + 'rem'}">
-        <div v-for="it in item" :class="['item', { 'red': it == date.getDate() }]" :style="{height: itemHeight + 'rem', lineHeight: itemHeight + 'rem',}" v-show="showNum(it)">
+      <div class="row" v-for="item in arr" :key="item" :style="{left: offsetBorder + 'rem'}">
+        <div v-for="it in item" :key="it" :class="['item', { 'red': it == date.getDate() }]" :style="{height: itemHeight + 'rem', lineHeight: itemHeight + 'rem',}" v-show="showNum(it)">
           <div v-show="it">
             <div class="tag free" v-if="workOrRest(it)">休</div>
             <div class="tag" v-else>班</div>
@@ -126,10 +126,6 @@ export default {
       let d = new Date(`${m.getFullYear()}/${m.getMonth() + 1}/01`);
       // 1日是周几
       let day = d.getDay();
-      // 如果是周日转换为7
-      if (day == 0) {
-        day = 7;
-      }
       // 缩进格数
       let week = day - (1 % 7 - 1);
       return (week - 6) * 7;
