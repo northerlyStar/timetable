@@ -3,15 +3,16 @@
     <div class="border_title">
       <div class="item" v-for="(item, index) in week" :key="index">{{item}}</div>
     </div>
-    <div class="border" :style="{height: borderHeight + 'rem'}">
-      <div class="row" v-for="item in arr" :key="item" :style="{left: offsetBorder + 'rem'}">
-        <div v-for="it in item" :key="it" :class="['item', { 'red': it == date.getDate() }]" :style="{height: itemHeight + 'rem', lineHeight: itemHeight + 'rem',}" v-show="showNum(it)">
+    <div class="border" :style="{ height: borderHeight + 'rem' }">
+      <div class="row" v-for="(item, index) in arr" :key="'item' + index" :style="{ left: offsetBorder + 'rem' }">
+        <div v-for="it in item" :key="it" :class="['item', { red: it == date.getDate() }]" :style="{ height: itemHeight + 'rem', lineHeight: itemHeight + 'rem',}" v-show="showNum(it)">
           <div v-show="it">
             <div class="tag free" v-if="workOrRest(it)">休</div>
             <div class="tag" v-else>班</div>
           </div>
           <span>{{it}}</span>
           <span v-if="typeof workOrRest(it) == 'string'" class="festival">{{workOrRest(it)}}</span>
+          <span v-if="jieqi(it)" class="festival">{{jieqi(it)}}</span>
         </div>
       </div>
     </div>
@@ -57,8 +58,8 @@ export default {
       return (() => {
         let width = document.body.clientWidth;
         that.screenWidth = width;
-      })()
-    }
+      })();
+    };
   },
   methods: {
     // 寿星公式 (Y * D + C) - L
@@ -67,13 +68,19 @@ export default {
       let D = 0.2422;
       // 获取C值
       let month = new Date().getMonth() + 1;
-      let C = [holiday.cOfSolarTerms[month * 2 - 2], holiday.cOfSolarTerms[month * 2 - 1]];
-      this.solarTerms = [holiday.solarTerms[month * 2 - 2], holiday.solarTerms[month * 2 - 1]];
+      let C = [
+        holiday.cOfSolarTerms[month * 2 - 2],
+        holiday.cOfSolarTerms[month * 2 - 1],
+      ];
+      this.solarTerms = [
+        holiday.solarTerms[month * 2 - 2],
+        holiday.solarTerms[month * 2 - 1],
+      ];
       // 计算L
       let L = Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400);
-      return C.map(data => {
+      return C.map((data) => {
         return Math.round(y * D + data) - L;
-      })
+      });
     },
     setFontSize() {
       if (this.screenWidth < 760) {
@@ -83,14 +90,14 @@ export default {
       }
     },
     // 农历
-    lunarCalendar () {
+    lunarCalendar() {
       // 农历年 十六进制
       let lunar = holiday.lunarInfo[this.date.getFullYear() - 1900].toString(2);
       // 不足十六位
       if (lunar.length < 16) {
         // 补足十六位
         for (let i = lunar.length; lunar.length < 16; i++) {
-          lunar = '0' + lunar;
+          lunar = "0" + lunar;
         }
       }
       // 取1-4位算闰月是哪月
@@ -116,39 +123,44 @@ export default {
           that.timer = false;
         }, 10);
       }
-    }
+    },
   },
   computed: {
     // 缩进
-    offsetBorder: function() {
+    offsetBorder: function () {
       let m = this.date;
       // 获得本月1日
       let d = new Date(`${m.getFullYear()}/${m.getMonth() + 1}/01`);
       // 1日是周几
       let day = d.getDay();
       // 缩进格数
-      let week = day - (1 % 7 - 1);
+      let week = day - ((1 % 7) - 1);
       return (week - 6) * 7;
     },
     // 表格高度
-    borderHeight: function() {
+    borderHeight: function () {
       let d = this.date;
       let f = new Date(`${d.getFullYear()}/${d.getMonth() + 1}/01`);
       let H = f.getDay() > 4 ? 6 : 5;
       return H * this.itemHeight;
     },
-    // 工作日或者休假
-    workOrRest: function() {
-      return function(day) {
-        let year = this.date.getFullYear();
-        let month = this.date.getMonth() + 1;
-        let newDate = new Date(`${year}/${month}/${day}`);
-        let result = newDate.getDay();
+    jieqi: function () {
+      return function (day) {
         // 二十四节气
         if (this.d.indexOf(day) >= 0) {
           let solarTerms = this.solarTerms[this.d.indexOf(day)];
           return solarTerms || true;
         }
+      };
+    },
+    // 工作日或者休假
+    workOrRest: function () {
+      return function (day) {
+        let year = this.date.getFullYear();
+        let month = this.date.getMonth() + 1;
+        let newDate = new Date(`${year}/${month}/${day}`);
+        let result = newDate.getDay();
+
         // 国家法定节假日月份
         if (holiday.rest[month]) {
           if (holiday.rest[month].indexOf(String(day)) >= 0) {
@@ -163,12 +175,12 @@ export default {
           }
         }
         // 正常周末
-        return (result == 0) || (result == 6);
-      }
+        return result == 0 || result == 6;
+      };
     },
     // 31日 30日 显隐
-    showNum: function() {
-      return function(e) {
+    showNum: function () {
+      return function (e) {
         let bool = true;
         // 2, 4、6、9、11月 没有三十一日
         if ([2, 4, 6, 9, 11].includes(this.date.getMonth() + 1)) {
@@ -181,10 +193,10 @@ export default {
           bool = !(this.date.getFullYear() % 4);
         }
         return bool;
-      }
-    }
+      };
+    },
   },
-}
+};
 </script>
 <style scoped>
 .calendar {
