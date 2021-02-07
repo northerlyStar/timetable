@@ -1,18 +1,36 @@
 <template>
   <div class="calendar">
     <div class="border_title">
-      <div class="item" v-for="(item, index) in week" :key="index">{{item}}</div>
+      <div class="item" v-for="(item, index) in week" :key="index">
+        {{ item }}
+      </div>
     </div>
     <div class="border" :style="{ height: borderHeight + 'rem' }">
-      <div class="row" v-for="(item, index) in arr" :key="'item' + index" :style="{ left: offsetBorder + 'rem' }">
-        <div v-for="it in item" :key="it" :class="['item', { red: it == date.getDate() }]" :style="{ height: itemHeight + 'rem', lineHeight: itemHeight + 'rem',}" v-show="showNum(it)">
+      <div
+        class="row"
+        v-for="(item, index) in arr"
+        :key="'item' + index"
+        :style="{ left: offsetBorder + 'rem' }"
+      >
+        <div
+          v-for="it in item"
+          :key="it"
+          :class="['item', { red: it == date.getDate() }]"
+          :style="{
+            height: itemHeight + 'rem',
+            lineHeight: itemHeight + 'rem',
+          }"
+          v-show="showNum(it)"
+        >
           <div v-show="it">
             <div class="tag free" v-if="workOrRest(it)">休</div>
             <div class="tag" v-else>班</div>
           </div>
-          <span>{{it}}</span>
-          <span v-if="typeof workOrRest(it) == 'string'" class="festival">{{workOrRest(it)}}</span>
-          <span v-if="jieqi(it)" class="festival">{{jieqi(it)}}</span>
+          <span>{{ it }}</span>
+          <span v-if="typeof workOrRest(it) == 'string'" class="festival">{{
+            workOrRest(it)
+          }}</span>
+          <span v-if="jieqi(it)" class="festival">{{ jieqi(it) }}</span>
         </div>
       </div>
     </div>
@@ -20,9 +38,7 @@
 </template>
 
 <script>
-import {
-  holiday
-} from './option'
+import { holiday } from "./option";
 export default {
   data() {
     return {
@@ -33,11 +49,11 @@ export default {
         [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
         [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
         [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
-        [23, 24, 25, 26, 27, 28, 29, 30, 31, , , , , ],
-        [30, 31, , , , , , , , , , , , ]
+        [23, 24, 25, 26, 27, 28, 29, 30, 31, , , , , , ,],
+        [30, 31, , , , , , , , , , , , , ,],
       ],
-      week: ['日', '一', '二', '三', '四', '五', '六'],
-      date: '',
+      week: ["日", "一", "二", "三", "四", "五", "六"],
+      date: "",
       // item 行高 单位rem
       itemHeight: 5,
       // 本月节气日期
@@ -107,9 +123,18 @@ export default {
       // 闰月为大月还是小月
       let leap;
       if (ifLeap !== 0) {
-        leap = holiday.lunarInfo[this.date.getFullYear() - 1900] + '';
+        leap = holiday.lunarInfo[this.date.getFullYear() - 1900] + "";
       }
-      console.log('十六进制：', lunar, '闰月：', ifLeap, '农历各月份天数：', lunarMonth, '闰月大小：', leap);
+      console.log(
+        "十六进制：",
+        lunar,
+        "闰月：",
+        ifLeap,
+        "农历各月份天数：",
+        lunarMonth,
+        "闰月大小：",
+        leap
+      );
     },
   },
   watch: {
@@ -183,12 +208,14 @@ export default {
       return function (e) {
         let bool = true;
         // 2, 4、6、9、11月 没有三十一日
-        if ([2, 4, 6, 9, 11].includes(this.date.getMonth() + 1)) {
-          if (e == 31) {
-            bool = false;
-          }
+        if ([2, 4, 6, 9, 11].includes(this.date.getMonth() + 1) && e == 31) {
+          bool = false;
         }
         // 2月 平年 没有三十日
+        if (this.date.getMonth() + 1 == 2 && e == 30) {
+          bool = false;
+        }
+        // 2月 闰年 有二十九日
         if (this.date.getMonth() + 1 == 2 && e == 29) {
           bool = !(this.date.getFullYear() % 4);
         }
