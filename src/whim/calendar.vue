@@ -1,7 +1,7 @@
 <template>
   <div class="calendar">
     <div class="border_title">
-      <div class="item" v-for="(item, index) in week" :key="index">
+      <div class="" v-for="(item, index) in week" :key="index">
         {{ item }}
       </div>
     </div>
@@ -55,7 +55,7 @@ export default {
       week: ["日", "一", "二", "三", "四", "五", "六"],
       date: "",
       // item 行高 单位rem
-      itemHeight: 5,
+      itemHeight: 4,
       // 本月节气日期
       d: [],
       // 节气中文
@@ -234,10 +234,7 @@ export default {
 }
 
 .border {
-  border: 1px solid #f74242;
-  border-bottom-width: 2px;
-  border-right-width: 2px;
-  border-radius: 0 0 4px 4px;
+  position: relative;
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
@@ -245,14 +242,17 @@ export default {
 
 .border_title {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
   width: 100%;
   color: #ffffff;
   background-color: #f74242;
-  border-radius: 4px 4px 0 0;
+  border-radius: 4px;
   box-sizing: border-box;
   overflow: hidden;
+  font-size: 1.2rem;
+  padding: 0.5rem 0;
+  margin-bottom: 0.3rem;
 }
 
 .row {
@@ -267,8 +267,9 @@ export default {
   position: relative;
   width: 7rem;
   text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.3rem;
+  background-color: #f8f8f8;
+  border-radius: 0.7rem;
 }
 
 .item::before {
@@ -278,24 +279,22 @@ export default {
   top: 0;
   right: 0;
   bottom: 0;
-  border: 1px solid #f74242;
+  border: 2px solid #ffffff;
   z-index: 999;
 }
 
 .tag {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 2px;
+  left: 2px;
   width: 1.4rem;
   line-height: 1.4rem;
   font-size: 0.8rem;
-  background-color: #f74242;
-  color: #ffffff;
-  z-index: -1;
+  color: #f74242;
 }
 
 .free {
-  background-color: #42d3f7;
+  color: #0d9bee;
 }
 
 .red {
@@ -304,8 +303,7 @@ export default {
 }
 
 .red > div > .tag {
-  background-color: #ffffff;
-  color: #62e795;
+  color: #ffffff;
   z-index: 1;
 }
 
@@ -316,8 +314,7 @@ export default {
   left: 0;
   right: 0;
   line-height: 1.3rem;
-  background: #f74242;
-  color: #ffffff;
+  color: #f74242;
   padding: 0.2rem 0;
   font-weight: normal;
 }

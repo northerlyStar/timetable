@@ -1,4 +1,4 @@
-# vue_version
+# northerlyStar
 
 ## Project setup
 ```
