@@ -1,38 +1,176 @@
 <template>
-  <div class="calendar">
-    <div class="border_title">
-      <div class="" v-for="(item, index) in week" :key="index">
-        {{ item }}
-      </div>
-    </div>
-    <div class="border" :style="{ height: borderHeight + 'rem' }">
+  <div>
+    <!-- 日历主体 -->
+    <div class="calendar">
+      <!-- 日历表头 -->
       <div
-        class="row"
-        v-for="(item, index) in arr"
-        :key="'item' + index"
-        :style="{ left: offsetBorder + 'rem' }"
+        class="border_title"
+        :style="{
+          backgroundColor: calendarConfig.tableHead.backgroundColor,
+          color: calendarConfig.tableHead.color,
+        }"
       >
-        <div
-          v-for="it in item"
-          :key="it"
-          :class="['item', { red: it == date.getDate() }]"
-          :style="{
-            height: itemHeight + 'rem',
-            lineHeight: itemHeight + 'rem',
-          }"
-          v-show="showNum(it)"
-        >
-          <div v-show="it">
-            <div class="tag free" v-if="workOrRest(it)">休</div>
-            <div class="tag" v-else>班</div>
-          </div>
-          <span>{{ it }}</span>
-          <span v-if="typeof workOrRest(it) == 'string'" class="festival">{{
-            workOrRest(it)
-          }}</span>
-          <span v-if="jieqi(it)" class="festival">{{ jieqi(it) }}</span>
+        <div class="" v-for="(item, index) in week" :key="index">
+          {{ item }}
         </div>
       </div>
+      <!-- 日历内容 -->
+      <div class="border" :style="{ height: borderHeight + 'rem' }">
+        <div
+          class="row"
+          v-for="(item, index) in arr"
+          :key="'item' + index"
+          :style="{ left: offsetBorder + 'rem' }"
+        >
+          <div
+            v-for="it in item"
+            :key="it"
+            class="item"
+            :style="{
+              height: itemHeight + 'rem',
+              lineHeight: itemHeight + 'rem',
+              backgroundColor: todayBC(it),
+              color: todayC(it),
+            }"
+            v-show="showNum(it)"
+          >
+            <div v-show="it">
+              <div
+                class="tag"
+                :style="{
+                  color: todayTC(it, calendarConfig.tableBody.restColor),
+                }"
+                v-if="workOrRest(it)"
+              >
+                休
+              </div>
+              <div
+                class="tag"
+                :style="{
+                  color: todayTC(it, calendarConfig.tableBody.workColor),
+                }"
+                v-else
+              >
+                班
+              </div>
+            </div>
+            <span>{{ it }}</span>
+            <span
+              v-if="typeof workOrRest(it) == 'string'"
+              class="festival"
+              :style="{ color: calendarConfig.tableBody.festivalColor }"
+              >{{ workOrRest(it) }}</span
+            >
+            <span
+              v-if="jieqi(it)"
+              class="festival"
+              :style="{ color: calendarConfig.tableBody.festivalColor }"
+              >{{ jieqi(it) }}</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 控制面板 -->
+    <div class="calendar_config" v-if="calendarConfig.isEdit">
+      <el-form label-width="8rem">
+        <!-- 表格表头的配置 -->
+        <div class="calendar_config_group">
+          <div class="calendar_title">表头配置</div>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="表头背景颜色">
+                <el-color-picker
+                  v-model="calendarConfig.tableHead.backgroundColor"
+                ></el-color-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="表头文字颜色">
+                <el-color-picker
+                  v-model="calendarConfig.tableHead.color"
+                ></el-color-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        <!-- 表格的配置 -->
+        <div class="calendar_config_group">
+          <div class="calendar_title">表格配置</div>
+          <!-- item的背景颜色和文字颜色 -->
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="背景颜色">
+                <el-color-picker
+                  v-model="calendarConfig.tableBody.backgroundColor"
+                ></el-color-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="文字颜色">
+                <el-color-picker
+                  v-model="calendarConfig.tableBody.color"
+                ></el-color-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <!-- 节日、节气的文字 -->
+          <el-row>
+            <el-col>
+              <el-form-item label="节日文字颜色">
+                <el-color-picker
+                  v-model="calendarConfig.tableBody.festivalColor"
+                ></el-color-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <!-- 休息、上班角标 -->
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="休息角标颜色">
+                <el-color-picker
+                  v-model="calendarConfig.tableBody.restColor"
+                ></el-color-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="上班角标颜色">
+                <el-color-picker
+                  v-model="calendarConfig.tableBody.workColor"
+                ></el-color-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <!-- 今日的特别配色 -->
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="今日背景颜色">
+                <el-color-picker
+                  v-model="calendarConfig.tableBody.todayBackgroundColor"
+                ></el-color-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="今日文字颜色">
+                <el-color-picker
+                  v-model="calendarConfig.tableBody.todayColor"
+                ></el-color-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :offset="14" :span="4">
+              <el-button @click="resetCalendarConfig">重置</el-button>
+            </el-col>
+            <el-col :span="4">
+              <el-button @click="saveCalendarConfig" type="primary"
+                >保存</el-button
+              >
+            </el-col>
+          </el-row>
+          <!--  -->
+        </div>
+      </el-form>
     </div>
   </div>
 </template>
@@ -60,6 +198,35 @@ export default {
       d: [],
       // 节气中文
       solarTerms: [],
+      // 日历配置
+      calendarConfig: {
+        // 编辑状态
+        isEdit: false,
+        // 表头配置
+        tableHead: {
+          backgroundColor: "#f74242",
+          color: "#ffffff",
+        },
+        // 表格配置
+        tableBody: {
+          // 边框
+          border: "",
+          // 背景颜色
+          backgroundColor: "#f8f8f8",
+          // 文字颜色
+          color: "#000000",
+          // 节日文字颜色
+          festivalColor: "#f74242",
+          // 休息角标颜色
+          restColor: "#0d9bee",
+          // 上班角标颜色
+          workColor: "#f74242",
+          // 今日文字颜色
+          todayColor: "#ffffff",
+          // 今日背景颜色
+          todayBackgroundColor: "#62e795",
+        },
+      },
     };
   },
   created() {
@@ -68,6 +235,10 @@ export default {
     this.d = this.formula();
   },
   mounted() {
+    // 查询本地是否有日历的配置缓存
+    this.checkCalendarConfigStorage();
+    // 获取参数，判断是否为编辑模式
+    this.getUrlQuery();
     let that = this;
     that.setFontSize();
     window.onresize = () => {
@@ -78,6 +249,51 @@ export default {
     };
   },
   methods: {
+    // 查询本地配置缓存
+    checkCalendarConfigStorage() {
+      // 判断有没有本地缓存配置
+      if (localStorage.getItem("calendarConfig")) {
+        // 替换
+        const config = JSON.parse(localStorage.getItem("calendarConfig"));
+        this.calendarConfig = config;
+      } else {
+        return false;
+      }
+    },
+    // 获取url中的参数，判断是否为编辑模式
+    getUrlQuery() {
+      if (this.$route.query.edit === "true") {
+        this.calendarConfig.isEdit = true;
+      }
+    },
+    // 重置日历配置
+    resetCalendarConfig() {
+      this.calendarConfig.tableHead = {
+        backgroundColor: "#f74242",
+        color: "#ffffff",
+      };
+      this.calendarConfig.tableBody = {
+        border: "",
+        backgroundColor: "#f8f8f8",
+        color: "#000000",
+        festivalColor: "#f74242",
+        restColor: "#0d9bee",
+        workColor: "#f74242",
+        todayColor: "#ffffff",
+        todayBackgroundColor: "#62e795",
+      };
+    },
+    // 保存日历配置
+    saveCalendarConfig() {
+      this.calendarConfig.isEdit = false;
+      localStorage.setItem(
+        "checkCalendarConfigStorage",
+        JSON.stringify(this.calendarConfig)
+      );
+      this.$router.push({
+        path: "/whim/calendar",
+      });
+    },
     // 寿星公式 (Y * D + C) - L
     formula() {
       let y = new Date().getFullYear();
@@ -222,6 +438,30 @@ export default {
         return bool;
       };
     },
+    // 计算是否为今日
+    todayBC: function () {
+      return (it) => {
+        return it !== this.date.getDate()
+          ? this.calendarConfig.tableBody.backgroundColor
+          : this.calendarConfig.tableBody.todayBackgroundColor;
+      };
+    },
+    // 计算是否为今日
+    todayC: function () {
+      return (it) => {
+        return it !== this.date.getDate()
+          ? this.calendarConfig.tableBody.color
+          : this.calendarConfig.tableBody.todayColor;
+      };
+    },
+    // 计算是否为今日
+    todayTC: function () {
+      return (it, color) => {
+        return it !== this.date.getDate()
+          ? color
+          : this.calendarConfig.tableBody.todayColor;
+      };
+    },
   },
 };
 </script>
@@ -245,8 +485,6 @@ export default {
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  color: #ffffff;
-  background-color: #f74242;
   border-radius: 4px;
   box-sizing: border-box;
   overflow: hidden;
@@ -268,7 +506,6 @@ export default {
   width: 7rem;
   text-align: center;
   font-size: 1.3rem;
-  background-color: #f8f8f8;
   border-radius: 0.7rem;
 }
 
@@ -290,21 +527,6 @@ export default {
   width: 1.4rem;
   line-height: 1.4rem;
   font-size: 0.8rem;
-  color: #f74242;
-}
-
-.free {
-  color: #0d9bee;
-}
-
-.red {
-  background-color: #62e795;
-  color: #ffffff;
-}
-
-.red > div > .tag {
-  color: #ffffff;
-  z-index: 1;
 }
 
 .festival {
@@ -317,5 +539,14 @@ export default {
   color: #f74242;
   padding: 0.2rem 0;
   font-weight: normal;
+}
+
+.calendar_config {
+  margin: 0 auto;
+  width: 49rem;
+}
+
+.calendar_title {
+  font-size: 1.3rem;
 }
 </style>
