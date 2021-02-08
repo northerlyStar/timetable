@@ -283,14 +283,11 @@ export default {
     },
     // 保存日历配置
     saveCalendarConfig() {
-      this.calendarConfig.isEdit = false;
       localStorage.setItem(
         "checkCalendarConfigStorage",
         JSON.stringify(this.calendarConfig)
       );
-      this.$router.push({
-        path: "/whim/calendar",
-      });
+      this.calendarConfig.isEdit = false;
     },
     // 寿星公式 (Y * D + C) - L
     formula() {
