@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="eidt_switch">
+      <el-switch
+        v-model="calendarConfig.isEdit"
+        active-text="编辑模式"
+      ></el-switch>
+    </div>
     <!-- 日历主体 -->
     <div class="calendar">
       <!-- 日历表头 -->
@@ -237,8 +243,6 @@ export default {
   mounted() {
     // 查询本地是否有日历的配置缓存
     this.checkCalendarConfigStorage();
-    // 获取参数，判断是否为编辑模式
-    this.getUrlQuery();
     let that = this;
     that.setFontSize();
     window.onresize = () => {
@@ -258,12 +262,6 @@ export default {
         this.calendarConfig = config;
       } else {
         return false;
-      }
-    },
-    // 获取url中的参数，判断是否为编辑模式
-    getUrlQuery() {
-      if (this.$route.query.edit === "true") {
-        this.calendarConfig.isEdit = true;
       }
     },
     // 重置日历配置
@@ -471,6 +469,12 @@ export default {
   width: 49rem;
   margin: 0 auto;
   overflow: hidden;
+}
+
+.eidt_switch {
+  position: absolute;
+  right: 0;
+  top: 70px;
 }
 
 .border {
