@@ -178,6 +178,12 @@
         </div>
       </el-form>
     </div>
+    <div class="live2d">
+      <live2d
+        :height="350"
+        :modelPath="'/live2dw/assets/asuna_33.model.json'"
+      ></live2d>
+    </div>
   </div>
 </template>
 
@@ -549,5 +555,11 @@ export default {
 
 .calendar_title {
   font-size: 1.3rem;
+}
+
+.live2d {
+  position: fixed;
+  right: 0;
+  bottom: 0;
 }
 </style>

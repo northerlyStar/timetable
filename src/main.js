@@ -16,6 +16,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI);
 
+// live2d
+import live2d from "live2d-vue";
+Vue.use(live2d);
+
 // public css file
 import './assets/css/style.css'
 
