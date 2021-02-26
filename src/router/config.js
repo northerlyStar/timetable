@@ -10,6 +10,7 @@ import calendar from '@/whim/calendar'
 import menu from '@/whim/menu'
 import git from '@/whim/gitPage'
 import countdown from '@/whim/countdown'
+import elementUI from '@/whim/elementUI'
 
 const route = [
   {
@@ -82,6 +83,12 @@ const route = [
         name: 'countdown',
         component: countdown,
         title: '蒋闻铭的倒计时',
+      },
+      {
+        path: 'elementUI',
+        name: 'elementUI',
+        component: elementUI,
+        title: '蒋闻铭的ElementUI',
       },
     ]
   },
