@@ -1,5 +1,4 @@
 import index from '@/pages/index'
-// import map from '@/pages/map'
 // import lifeGame from '@/pages/lifeGame'
 import calculate from '@/pages/calculate'
 import fakedata from '@/pages/fakedata'
