@@ -26,7 +26,10 @@
           class="row"
           v-for="(item, index) in arr"
           :key="'item' + index"
-          :style="{ left: offsetBorder + 'rem' }"
+          :style="{
+            left: offsetBorder + 'rem',
+            width: 7 * item.length + 'rem',
+          }"
         >
           <div
             v-for="it in item"
@@ -504,7 +507,6 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 91rem;
   position: relative;
 }
 
