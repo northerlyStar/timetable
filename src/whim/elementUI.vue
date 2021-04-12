@@ -38,6 +38,9 @@
         <el-input v-model="input"></el-input>
       </el-col>
     </el-row>
+    <el-row>
+      <el-button @click="setHeaders()">set header</el-button>
+    </el-row>
   </div>
 </template>
 
@@ -148,6 +151,15 @@ export default {
       for (const iterator of this.correspond) {
         this[iterator.control] = item[iterator.value];
       }
+    },
+    // 设置请求头测试
+    async setHeaders() {
+      const url = "http://localhost:4000/saveWeather";
+      const params = { test: "test" };
+      const headers = { token: "fullName" };
+      const { data } = await this.axios.post(url, params, { headers });
+      // const { data } = await this.axios.post(url, params);
+      console.log(data);
     },
   },
   watch: {},
